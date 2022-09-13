@@ -27,7 +27,7 @@ requests:
         created_date:
           _date: now
 properties:
-  title: Cadastrar endereço
+  title: Integração com viaCEP - Autocomplete
 layout:
   contentJustify: center
 blocks:
@@ -40,7 +40,7 @@ blocks:
       - id: page_heading
         type: Title
         properties:
-          content: Cadastro de endereço 
+          content: Integração com viaCEP - Autocomplete
           level: 2 
       - id: zipcode
         type: TextInput
@@ -54,10 +54,6 @@ blocks:
           title: CEP
         events:
           onChange:
-            - id: testJs
-              type: JsAction
-              params:
-                name: autoCompletZipCode
             - id: get_cep
               type: Request
               skip:
@@ -84,31 +80,14 @@ blocks:
                 city:
                   _request: get_address.data.localidade
                 state:
-                  _request: get_address.data.uf
-      - id: btn-zipcode
-        type: Button
-        layout:
-          span: 12
-        properties:
-          title: Validar cep
-          block: false
-          type: primary 
-          icon: SaveOutlined
-        events: 
-          onClick:
-            - id: modifyUrl
-              type: JsAction
-              params:
-                name: autoCompletZipCode  
+                  _request: get_address.data.uf 
       - id: street
         type: TextInput
         validate:
-          - message: Não podecaracter especial.
+          - message: Por favor não digite caractere especial.
             status: error
             pass:
               _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
-        layout:
-          span: 7
         properties:
           title: Logradouro
           placeholder: 'EX: Rua caruaru' 
