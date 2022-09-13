@@ -1,0 +1,161 @@
+type: PageHeaderMenu
+id: viacep
+requests:
+  - id: get_address
+    type: AxiosHttp
+    connectionId: viacepApi
+    properties:
+        url: 
+          _nunjucks: https://viacep.com.br/ws/{{ zipcode }}/json/
+  - id: save_data
+    type: GoogleSheetAppendOne
+    connectionId: google_sheet
+    properties:
+      row:
+        # Get all the values to save from state
+        technology_name:
+          _state: technology_name
+        employee_name:
+          _state: employee_name
+        technology_type:
+          _state: technology_type
+        database_adm:
+          _state: database_adm
+        technology_description:
+          _state: technology_description
+        # Add the date the row was created using the `_date.now` operator.
+        created_date:
+          _date: now
+properties:
+  title: Cadastrar endereço
+layout:
+  contentJustify: center
+blocks:
+  - id: content_card
+    type: Card
+    layout:
+      size: 1000
+      contentGutter: 16
+    blocks:
+      - id: page_heading
+        type: Title
+        properties:
+          content: Cadastro de endereço 
+          level: 2 
+      - id: zipcode
+        type: TextInput
+        required: true
+        validate:
+          - message: Cep inválido.
+            status: error
+            pass:
+              _regex: ^[0-9]{8,8}$
+        properties:
+          title: CEP
+        events:
+          onChange:
+            - id: testJs
+              type: JsAction
+              params:
+                name: autoCompletZipCode
+            - id: get_cep
+              type: Request
+              skip:
+                _not:
+                  _gte:
+                    - _string.length:
+                        _state: zipcode
+                    - 8
+              params:
+                - get_address             
+            - id: set_brands
+              type: SetState
+              skip:
+                _not:
+                  _gte:
+                    - _string.length:
+                        _state: zipcode
+                    - 8
+              params:
+                street:
+                  _request: get_address.data.logradouro
+                district:
+                  _request: get_address.data.bairro
+                city:
+                  _request: get_address.data.localidade
+                state:
+                  _request: get_address.data.uf
+      - id: btn-zipcode
+        type: Button
+        layout:
+          span: 12
+        properties:
+          title: Validar cep
+          block: false
+          type: primary 
+          icon: SaveOutlined
+        events: 
+          onClick:
+            - id: modifyUrl
+              type: JsAction
+              params:
+                name: autoCompletZipCode  
+      - id: street
+        type: TextInput
+        validate:
+          - message: Não podecaracter especial.
+            status: error
+            pass:
+              _regex: '^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ 0-9]+$'
+        layout:
+          span: 7
+        properties:
+          title: Logradouro
+          placeholder: 'EX: Rua caruaru' 
+          disabled: false
+      - id: district
+        type: TextInput
+        required: true
+        properties:
+          title: Bairro
+      - id: city
+        type: TextInput
+        required: true
+        properties:
+          title: Cidade
+      - id: state
+        type: TextInput
+        required: true
+        properties:
+          title: Estado(UF)
+      - id: reset_button
+        type: Button
+        layout:
+          span: 12
+        properties:
+          title: Reset
+          block: true
+          type: default
+          icon: ClearOutlined
+        events:
+          onClick:
+            - id: reset
+              type: Reset
+      - id: submit_button
+        type: Button
+        layout:
+          span: 12
+        properties:
+          title: Submit
+          block: true
+          type: primary
+          icon: SaveOutlined
+        events:
+          onClick:
+            - id: validate
+              type: Validate
+            - id: save_data
+              type: Request
+              params: save_data
+            - id: reset
+              type: Reset

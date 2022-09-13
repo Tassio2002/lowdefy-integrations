@@ -1,0 +1,87 @@
+
+lowdefy: 3.23.3
+name: Lowdefy starter
+app:
+  html:
+    appendBody: |
+      <script>
+        function getZipcodeValue() {
+          let zipcodeValue = document.querySelector("#zipcode_input")
+          console.log(zipcodeValue.value)
+        }
+        function autoCompletZipCode() {
+          let btnZipcode = document.querySelector("#btn-zipcode")
+          btnZipcode.addEventListener("click", getZipcodeValue)
+          //modificar a url da requisição
+          //Fazer a requisição com a o cep digitado
+          //Receber a resposta do servidor
+          //Auto completar os campos com o resultado
+        }
+        window.lowdefy.registerJsAction('autoCompletZipCode', autoCompletZipCode);
+      </script>
+connections:
+  - id: my_api
+    type: AxiosHttp
+    properties:
+      baseURL: https://jsonplaceholder.typicode.com
+  - id: viacepApi
+    type: AxiosHttp
+menus:
+  - id: default
+    links:
+       - id: welcome
+         type: MenuLink
+         properties:
+           icon: HomeOutlined
+           title: Home
+         pageId: welcome
+       - id: viacep
+         type: MenuLink
+         properties:
+          icon: ProjectOutlined
+          title: Viacep
+         pageId: viacep
+pages:
+  - _ref: viacep.yaml
+  - id: welcome
+    type: PageHeaderMenu
+    requests:
+      - id: get_posts
+        type: AxiosHttp
+        connectionId: my_api
+        properties:
+          url: /posts
+    events:
+      onInitAsync:
+        - id: fetch_get_posts
+          type: Request
+          params: get_posts
+    properties:
+      title: Welcome
+    areas:
+      content:
+        justify: center
+        blocks:
+          - id: content_card
+            type: Card
+            style:
+              maxWidth: 800
+            blocks:
+              - id: content
+                type: Result
+                properties:
+                  title: 
+                    _request: get_posts.data.0.title
+                  subTitle: We are excited to see what you are going to build
+                  icon:
+                    name: HeartTwoTone
+                    color: '#f00'                     
+      footer:
+        blocks:
+          - id: footer
+            type: Paragraph
+            properties:
+              type: secondary
+              content: |
+                Made by a Lowdefy 🤖
+
