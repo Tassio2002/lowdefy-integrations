@@ -5,14 +5,12 @@ requests:
     type: SendGridMailSend
     connectionId: my_sendgrid
     properties:
-      to: Tassio Santos <tassio.santos2002@gmail.com>
-      subject: Testando o sendgrid para envio de emali 🌱
-      text: |
-        Olá
-
-        Eu sou um email enviado através do sendgrid :)
-
-        Seja bem vindo(a)
+      to: 
+        _state: email_input
+      subject: 
+        _state: subject_input
+      text: 
+        _state: text_email_input
 properties:
   title: Integração com SendGrid - Envio de email
 layout:
@@ -29,11 +27,6 @@ blocks:
         properties:
           content: Integração com SendGrid - Envio de email
           level: 3
-      - id: name_input
-        type: TextInput
-        properties:
-          title: Nome do destinatário
-          placeholder: Carlos Almeida
       - id: email_input
         type: TextInput
         properties:
@@ -44,7 +37,7 @@ blocks:
         properties:
           title: Resumo do email
           placeholder: Email referente a sua compra
-      - id: email_input
+      - id: text_email_input
         type: TextArea
         properties:
           title: Texto do email
