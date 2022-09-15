@@ -40,7 +40,7 @@ blocks:
       - id: page_heading
         type: Title
         properties:
-          content: Integração com viaCEP - Autocomplete (AxiosHttp)
+          content: Integração com viaCEP - Autocomplete
           level: 3
       - id: zipcode
         type: TextInput

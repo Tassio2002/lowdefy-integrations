@@ -10,6 +10,8 @@ connections:
       apiKey:
         _secret: sandgrid
       from: tassio.santos@simbioseventures.com
+  - id: cpfCnpj
+    type: AxiosHttp
 menus:
   - id: default
     links:
@@ -31,9 +33,16 @@ menus:
            icon: MessageOutlined
            title: SendGrid
          pageId: sendgrid-email
+       - id: cpfcnpj
+         type: MenuLink
+         properties:
+           icon: IdcardFilled
+           title: CPF/CNPJ
+         pageId: cpfcnpj
 pages:
-  - _ref: viacep.yaml
-  - _ref: sendgrid.yaml
+  - _ref: pages/viacep.yaml
+  - _ref: pages/sendgrid.yaml
+  - _ref: pages/cpf-cnpj-verify.yaml
   - id: welcome
     type: PageHeaderMenu
     properties:
