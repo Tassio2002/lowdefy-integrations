@@ -5,8 +5,8 @@ requests:
     type: AxiosHttp
     connectionId: viacepApi
     properties:
-        url: 
-          _nunjucks: https://viacep.com.br/ws/{{ zipcode }}/json/
+      url:
+        _nunjucks: https://viacep.com.br/ws/{{ zipcode }}/json/
   - id: save_data
     type: GoogleSheetAppendOne
     connectionId: google_sheet
@@ -40,8 +40,8 @@ blocks:
       - id: page_heading
         type: Title
         properties:
-          content: Integração com viaCEP - Autocomplete
-          level: 2 
+          content: Integração com viaCEP - Autocomplete (AxiosHttp)
+          level: 3
       - id: zipcode
         type: TextInput
         required: true

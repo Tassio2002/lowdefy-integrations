@@ -1,0 +1,64 @@
+type: PageHeaderMenu
+id: sendgrid-email
+requests:
+  - id: send_email
+    type: SendGridMailSend
+    connectionId: my_sendgrid
+    properties:
+      to: Tassio Santos <tassio.santos2002@gmail.com>
+      subject: Testando o sendgrid para envio de emali 🌱
+      text: |
+        Olá
+
+        Eu sou um email enviado através do sendgrid :)
+
+        Seja bem vindo(a)
+properties:
+  title: Integração com SendGrid - Envio de email
+layout:
+  contentJustify: center
+blocks:
+  - id: content_card
+    type: Card
+    layout:
+      size: 1000
+      contentGutter: 16
+    blocks:
+      - id: page_heading
+        type: Title
+        properties:
+          content: Integração com SendGrid - Envio de email
+          level: 3
+      - id: name_input
+        type: TextInput
+        properties:
+          title: Nome do destinatário
+          placeholder: Carlos Almeida
+      - id: email_input
+        type: TextInput
+        properties:
+          title: Email do destinatário
+          placeholder: 'email@example.com'
+      - id: subject_input
+        type: TextInput
+        properties:
+          title: Resumo do email
+          placeholder: Email referente a sua compra
+      - id: email_input
+        type: TextArea
+        properties:
+          title: Texto do email
+          placeholder: Olá seja bem vindo a nossa plataforma, aqui voce vai encontrar tudo o que precisa...
+          autoSize: true
+      - id: send_email_btn
+        type: Button
+        properties:
+          title: Enviar email
+          block: true
+          ghost: true
+          icon: RocketOutlined
+        events:
+          onClick:
+            - id: send_email
+              type: Request
+              params: send_email
