@@ -1,11 +1,5 @@
 type: PageHeaderMenu
 id: cpfcnpj
-requests:
-  - id: verify_cpfCnpj
-    type: AxiosHttp
-    connectionId: cpfCnpj
-    properties:
-      url: https://api.cpfcnpj.com.br/5ae973d7a997af13f0aaf2bf60e65803/9/09284462550 
 properties:
   title: Integração com CPF/CNPJ 
 layout:
@@ -22,16 +16,11 @@ blocks:
         properties:
           content: Integração com CPF/CNPJ 
           level: 3
-      - id: cpf
+      - id: cpf_input
         type: TextInput
         properties:
           title: CPF
           placeholder: 'email@example.com'
-      - id: cnpj
-        type: TextInput
-        properties:
-          title: CNPJ
-          placeholder: Email referente a sua compra
       - id: cpf_verify_btn
         type: Button
         properties:
@@ -42,6 +31,9 @@ blocks:
         events:
           onClick:
             - id: verify_cpf
-              type: Request
-              params: verify_cpfCnpj
+              type: JsAction
+              params:
+                name: TestaCPF
+                args: 
+                  - _state: cpf_input
       
